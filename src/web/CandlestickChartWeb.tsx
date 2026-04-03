@@ -12,7 +12,6 @@ import { Candle, CandlestickChartProps, RiskLine, Viewport } from "../types";
 // ─── Layout ────────────────────────────────────────────────────────────────────
 const AXIS_W      = 98;
 const TOP_BAR_H   = 30;
-const BOTTOM_H    = 48;
 const TIME_ROW_H  = 22;
 const TF_ROW_H    = 26;
 const MIN_SPAN    = 8;
@@ -43,7 +42,7 @@ const C = {
   priceTagDn:  "#ef5350",
   crossTag:    "#363a45",
   timeTag:     "#363a45",
-  maLine:      "#2962ff",
+  // maLine:      "#2962ff",
   tooltipBg:   "#1e222d",
   tooltipBdr:  "#2a2e39",
   font10:      "10px 'Helvetica Neue',Arial,sans-serif",
@@ -513,19 +512,19 @@ export function CandlestickChartWeb(props: ExtendedChartProps): JSX.Element {
     }
 
     // MA20
-    if (visible.length > 20) {
-      const maPts = movingAverage(visible.map((c) => c.close), 20);
-      ctx.strokeStyle = C.maLine; ctx.lineWidth = 1.5; ctx.setLineDash([]); ctx.beginPath();
-      let maStarted = false;
-      for (let i = 0; i < maPts.length; i++) {
-        const v    = maPts[i]; if (v === null) continue;
-        const absI = viStart + i;
-        const x    = toCanvasX(absI - viewport.start);
-        const y    = toCanvasY(v);
-        if (!maStarted) { ctx.moveTo(x, y); maStarted = true; } else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    }
+    // if (visible.length > 20) {
+    //   const maPts = movingAverage(visible.map((c) => c.close), 20);
+    //   ctx.strokeStyle = C.maLine; ctx.lineWidth = 1.5; ctx.setLineDash([]); ctx.beginPath();
+    //   let maStarted = false;
+    //   for (let i = 0; i < maPts.length; i++) {
+    //     const v    = maPts[i]; if (v === null) continue;
+    //     const absI = viStart + i;
+    //     const x    = toCanvasX(absI - viewport.start);
+    //     const y    = toCanvasY(v);
+    //     if (!maStarted) { ctx.moveTo(x, y); maStarted = true; } else ctx.lineTo(x, y);
+    //   }
+    //   ctx.stroke();
+    // }
 
     for (const line of riskLines) {
       const ly   = toCanvasY(line.price);
@@ -788,9 +787,9 @@ export function CandlestickChartWeb(props: ExtendedChartProps): JSX.Element {
     { label: "1d",  value: "1440" },
   ];
 
-  const last    = candles.length ? candles[candles.length - 1] : null;
-  const curIsUp = last ? last.close >= last.open : true;
-  const curCol  = curIsUp ? C.up : C.down;
+  // const last    = candles.length ? candles[candles.length - 1] : null;
+  // const curIsUp = last ? last.close >= last.open : true;
+  // const curCol  = curIsUp ? C.up : C.down;
 
   return (
     <div
@@ -802,7 +801,7 @@ export function CandlestickChartWeb(props: ExtendedChartProps): JSX.Element {
         display:         "flex",
         flexDirection:   "column",
         background:      C.bg,
-        borderRadius:    8,
+        borderRadius:    4,
         overflow:        "hidden",
         border:          `1px solid ${C.border}`,
       }}
@@ -866,7 +865,7 @@ export function CandlestickChartWeb(props: ExtendedChartProps): JSX.Element {
 
         <div
           style={{
-            color:         curCol,
+            color:         C.priceTagUp,
             fontSize:      11,
             fontFamily:    "'Helvetica Neue',Arial,sans-serif",
             fontWeight:    600,
